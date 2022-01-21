@@ -15,6 +15,7 @@ app.set('views', path.join(__dirname, "../app/views"));
 app.engine('.hbs', exphbs({
     defaultLayout: 'layout',
     extname: 'hbs',
+    helpers: path.join(__dirname,"../app/views/helpers"),
     layoutsDir: path.join(__dirname, "../app/views/layouts"),
     partialsDir: path.join(__dirname, "../app/views/partials")
 }));
