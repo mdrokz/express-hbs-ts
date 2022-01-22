@@ -20,7 +20,7 @@
     "express-handlebars": "^3.0.0",
     "mysql": "^2.16.0",
     "pg": "^8.7.1",
-    "reflect-metadata": "^0.1.12",
+    "reflect-metadata": "^0.1.12"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",
