@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsc && node build/server.js",
-    "dev": "tsc --watch",
+    "dev": "concurrently --kill-others \"tsc --watch\" \"nodemon build/server.js\"",
     "orm:generate": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:generate -n test",
     "orm:run": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:run",
     "orm:revert": "./node_modules/.bin/ts-node ./node_modules/typeorm/cli.js migration:revert"
