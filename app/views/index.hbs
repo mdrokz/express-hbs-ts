@@ -1,1 +1,41 @@
+<h1>HELLLO</h1>
+
+<ul class="data_table">
+    {{#each data}}
+    <div>
+        <li>
+            <p class="broker">{{this.broker}}</p>
+        </li>
+    </div>
+    <div>
+        <li>
+            <p class="listing_month">
+                {{this.listing_month}}
+            </p>
+        </li>
+    </div>
+    <div>
+        <li>
+            <p class="listing_date">
+                {{this.listing_date}}
+            </p>
+        </li>
+    </div>
+    <div>
+        <li>
+            <p class="listing_id">
+                {{this.listing_id}}
+            </p>
+        </li>
+    </div>
+    <div>
+        <li>
+            <p class="revenue">
+                {{this.revenue}}
+            </p>
+        </li>
+    </div>
+    {{/each}}
+</ul>
+
 <h1>{{ message }}</h1>
