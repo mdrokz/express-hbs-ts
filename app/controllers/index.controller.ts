@@ -33,6 +33,27 @@ router.get('/', async (req: Request, res: Response) => {
     from deals d
     inner join sites s on d.site_id = s.id `);
 
+    let brokers = await client.query(`
+    Select 
+    Count(1) as Listing_Count,
+    x.broker_id,
+    x.broker,
+    x.Listing_Month,
+    ROUND(AVG(x.revenue)::numeric,2) as Avg_Revenue
+    from (
+    Select 
+    s.id as broker_id,
+    s.title as broker,
+    EXTRACT(Month FROM d.listing_date) as Listing_Month,
+    d.revenue
+    from deals d
+    inner join sites s on d.site_id = s.id
+        where d.listing_date between '2020-11-01' and '2021-11-30'
+    ) as x
+    group by x.Listing_Month, x.broker, x.broker_id
+    order by x.broker_id, x.Listing_Month asc
+    `);
+
     let table_data = db.rows.map(r => {
         let deal: Deal = new Deal(r.listing_id, r.listing_date, r.listing_month, r.revenue);
         return { ...deal, broker: r.broker };
