@@ -1,43 +1,40 @@
 <h1>{{ message }}</h1>
 
-  <canvas id="myChart"></canvas>
+<canvas id="myChart"></canvas>
 
-<ul class="data_table">
-    {{#each data}}
-    <div>
-        <li>
-            <p class="broker">{{this.broker}}</p>
-        </li>
-    </div>
-    <div>
-        <li>
-            <p class="listing_month">
+<table id="data_table" class="display" style="width:100%">
+    <thead>
+        <th>Broker</th>
+        <th>Listing Month</th>
+        <th>Listing Date</th>
+        <th>Listing ID</th>
+        <th>Revenue</th>
+    </thead>
+
+    <tbody>
+        {{#each data}}
+        <tr>
+            <td class="broker">{{this.broker}}</td>
+            <td class="listing_month">
                 {{this.listing_month}}
-            </p>
-        </li>
-    </div>
-    <div>
-        <li>
-            <p class="listing_date">
+            </td>
+            <td class="listing_date">
                 {{this.listing_date}}
-            </p>
-        </li>
-    </div>
-    <div>
-        <li>
-            <p class="listing_id">
-                {{this.listing_id}}
-            </p>
-        </li>
-    </div>
-    <div>
-        <li>
-            <p class="revenue">
+            </td>
+            <td class="listing_id">
+                {{this.id}}
+            </td>
+            <td class="revenue">
                 {{this.revenue}}
-            </p>
-        </li>
-    </div>
-    {{/each}}
-</ul>
-
-<h1>{{ message }}</h1>
+            </td>
+        </tr>
+        {{/each}}
+    </tbody>
+    <tfoot>
+        <th>Broker</th>
+        <th>Listing Month</th>
+        <th>Listing Date</th>
+        <th>Listing ID</th>
+        <th>Revenue</th>
+    </tfoot>
+</table>
