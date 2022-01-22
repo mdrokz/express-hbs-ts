@@ -8,6 +8,7 @@ import { IndexController } from './controllers';
 import * as path from 'path';
 import "reflect-metadata";
 // Create a new express application instance
+
 const app: express.Application = express();
 // The port the express app will listen on
 const port: number = 3000;
