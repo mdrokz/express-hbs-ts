@@ -23,16 +23,8 @@ const router: Router = Router();
 // The / here corresponds to the route that the WelcomeController
 // is mounted on in the server.ts file.
 // In this case it's /welcome
-router.get('/', async (req: Request, res: Response) => {
-    // Reply with a hello world when no name param is provided
-    let db = await client.query(`Select d.id as Listing_Id,
-    d.listing_date as Listing_Date,
-    EXTRACT(Month FROM d.listing_date) as Listing_Month,
-    s.title as broker,
-    d.revenue
-    from deals d
-    inner join sites s on d.site_id = s.id `);
 
+router.get('/brokers', async (req: Request, res: Response) => {
     let brokers = await client.query(`
     Select 
     Count(1) as Listing_Count,
@@ -54,14 +46,27 @@ router.get('/', async (req: Request, res: Response) => {
     order by x.broker_id, x.Listing_Month asc
     `);
 
+    res.json(brokers.rows);
+});
+
+router.get('/', async (req: Request, res: Response) => {
+    // Reply with a hello world when no name param is provided
+    let db = await client.query(`Select d.id as Listing_Id,
+    d.listing_date as Listing_Date,
+    EXTRACT(Month FROM d.listing_date) as Listing_Month,
+    s.title as broker,
+    d.revenue
+    from deals d
+    inner join sites s on d.site_id = s.id `);
+
+
+
     let table_data = db.rows.map(r => {
         let deal: Deal = new Deal(r.listing_id, r.listing_date, r.listing_month, r.revenue);
         return { ...deal, broker: r.broker };
     });
 
-    console.log(table_data);
-
-    res.render('index', {data: table_data});
+    res.render('index', { data: table_data });
 });
 
 router.get('/:name', (req: Request, res: Response) => {
