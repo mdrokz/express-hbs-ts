@@ -8,19 +8,35 @@ $(document).ready(async function () {
 
     const a = [];
 
-    brokers.reduce((p, c) => {
-        console.log(p, c);
+    let arrBroker = [...new Set(brokers.map(m => m.broker_id))];
 
-        // let [lcount, lcount2] = [p.listing_count, c.listing_count];
-        // let [lmonth, lmonth2] = [p.listing_month, c.listing_month];
-        // let [revnue, revenue2] = [p.avg_revenue, c.avg_revenue];
+    let arrGraph = [];
+    arrBroker.forEach((brokerId, index) => {
+        let deals = brokers.filter(f => f.broker_id == brokerId);
+        if (deals.length > 0) {
+            let arrListingCount = [];
+            let arrRevenue = [];
+            for (let i = 1; i <= 12; i++) {
+                let deal = deals.find(f => f.listing_month == i);
+                if (deal) {
+                    arrListingCount.push(deal.listing_count);
+                    arrRevenue.push(deal.avg_revenue);
+                } else {
+                    arrListingCount.push(0);
+                    arrRevenue.push(0);
+                }
+            }
 
-        if (c.broker_id == p.broker_id) {
-            
+            let dataSet = {
+                label: deals[0].broker,
+                backgroundColor: "rgb(255, 99, 132)",
+                borderColor: "rgb(255, 99, 132)",
+                data: arrListingCount,
+                revenue: arrRevenue
+            }
+            arrGraph.push(dataSet);
         }
-
-        return c;
-    })
+    });
 
     const labels = [
         "January",
@@ -39,18 +55,9 @@ $(document).ready(async function () {
 
     const data = {
         labels: labels,
-        datasets: [{
-            label: "My First dataset",
-            backgroundColor: "rgb(255, 99, 132)",
-            borderColor: "rgb(255, 99, 132)",
-            data: [0, 10, 5, 2, 20, 30, 45, 80, 87, 10, 45, 56],
-        }, {
-            label: "My Second dataset",
-            backgroundColor: "rgb(255, 99, 120)",
-            borderColor: "rgb(255, 99, 132)",
-            data: [0, 10, 5, 2, 20, 30, 45, 80, 17, 10, 35, 40],
-        }],
+        datasets: arrGraph
     };
+
 
     const config = {
         type: "line",
