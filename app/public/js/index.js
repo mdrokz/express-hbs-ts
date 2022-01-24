@@ -1,6 +1,13 @@
+function random_rgb() {
+    var o = Math.round, r = Math.random, s = 255;
+    return 'rgb(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ')';
+}
+
+
 $(document).ready(async function () {
 
-    const broker_req = await fetch('http://localhost:3000/index/brokers');
+    // const broker_req = await fetch('http://localhost:3000/index/brokers');
+    const broker_req = await fetch('http://0.tcp.in.ngrok.io:10464/index/brokers');
 
     const brokers = await broker_req.json();
 
@@ -29,8 +36,8 @@ $(document).ready(async function () {
 
             let dataSet = {
                 label: deals[0].broker,
-                backgroundColor: "rgb(255, 99, 132)",
-                borderColor: "rgb(255, 99, 132)",
+                backgroundColor: random_rgb(),
+                borderColor: random_rgb(),
                 data: arrListingCount,
                 revenue: arrRevenue
             }
@@ -69,7 +76,27 @@ $(document).ready(async function () {
     var myChart = new Chart(ctx, {
         type: "line",
         data: data,
-        options: {},
+        options: {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            let revenue = context.dataset.revenue[context.dataIndex];
+    
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed.y !== null) {
+                                label += context.parsed.y
+                                label += `\n Average Revenue: ${revenue}`;
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
     });
 
     $('#data_table').DataTable();
