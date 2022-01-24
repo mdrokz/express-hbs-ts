@@ -1,5 +1,5 @@
 /* app/server.ts */
-
+require('dotenv').config()
 // Import everything from express and assign it to the express variable
 import express = require('express');
 import exphbs = require('express-handlebars');

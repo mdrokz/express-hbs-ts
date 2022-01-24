@@ -6,13 +6,7 @@ import Deal from '../models/deal';
 
 import { Client } from 'pg';
 
-const client = new Client({
-    user: '',
-    host: '',
-    database: 'test_assignment',
-    password: '',
-    port: 5432
-});
+const client = new Client();
 
 client.connect().then(r => console.log('Connected to DB')).catch(e => console.log(e));
 
