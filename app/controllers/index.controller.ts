@@ -7,10 +7,10 @@ import Deal from '../models/deal';
 import { Client } from 'pg';
 
 const client = new Client({
-    user: 'test-assignment',
-    host: 'test-instance-1-cluster.cluster-cys30lik4v4w.us-east-1.rds.amazonaws.com',
+    user: '',
+    host: '',
     database: 'test_assignment',
-    password: 'gfdjh24m,sddsf',
+    password: '',
     port: 5432
 });
 
