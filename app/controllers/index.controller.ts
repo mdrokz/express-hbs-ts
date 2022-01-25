@@ -18,6 +18,12 @@ const router: Router = Router();
 // is mounted on in the server.ts file.
 // In this case it's /welcome
 
+function random_rgb() {
+    var o = Math.round, r = Math.random, s = 255;
+    return 'rgb(' + o(r()*s) + ',' + o(r()*s) + ',' + o(r()*s) + ')';
+}
+
+
 router.get('/brokers', async (req: Request, res: Response) => {
     let brokers = await client.query(`
     Select 
@@ -40,7 +46,37 @@ router.get('/brokers', async (req: Request, res: Response) => {
     order by x.broker_id, x.Listing_Month asc
     `);
 
-    res.json(brokers.rows);
+    let arrBroker = Array.from(new Set(brokers.rows.map(m => m.broker_id)));
+
+    let arrGraph: any = [];
+    arrBroker.forEach((brokerId, index) => {
+        let deals = brokers.rows.filter(f => f.broker_id == brokerId);
+        if (deals.length > 0) {
+            let arrListingCount = [];
+            let arrRevenue = [];
+            for (let i = 1; i <= 12; i++) {
+                let deal = deals.find(f => f.listing_month == i);
+                if (deal) {
+                    arrListingCount.push(deal.listing_count);
+                    arrRevenue.push(deal.avg_revenue);
+                } else {
+                    arrListingCount.push(0);
+                    arrRevenue.push(0);
+                }
+            }
+
+            let dataSet = {
+                label: deals[0].broker,
+                backgroundColor: random_rgb(),
+                borderColor: random_rgb(),
+                data: arrListingCount,
+                revenue: arrRevenue
+            }
+            arrGraph.push(dataSet);
+        }
+    });
+
+    res.json(arrGraph);
 });
 
 router.get('/', async (req: Request, res: Response) => {
